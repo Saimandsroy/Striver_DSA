@@ -11,19 +11,58 @@
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        
+        int count1=countDigit(headA);
+        int count2=countDigit(headB);
+
+
         ListNode tempA=headA;
-        while(tempA != null){
-            ListNode tempB=headB;
-        
-        while(tempB != null){
-            if(tempA == tempB){
+        ListNode tempB=headB;
+
+
+        if(count1> count2){
+            int diff= count1-count2;
+
+            while(diff>0){
+                tempA=tempA.next;
+                diff--;
+            }
+        }
+        else{
+            int diff= count2-count1;
+
+            while(diff>0){
+                tempB=tempB.next;
+                diff--;
+            }
+
+        }
+
+
+        while(tempA != null && tempB != null){
+
+            if(tempA==tempB){
                 return tempA;
             }
+
+            tempA=tempA.next;
             tempB=tempB.next;
+
+
         }
-        tempA=tempA.next;
+
+        return null;
+
+
+
     }
-    return null;
+
+    private int  countDigit(ListNode head){
+        ListNode node=head;
+        int count =0;
+         while(node!=null){
+            count++;
+            node=node.next;
+         }
+         return count;
     }
 }
