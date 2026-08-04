@@ -1,30 +1,10 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
+
     public ListNode reverseKGroup(ListNode head, int k) {
 
         if (head == null || k == 1) {
             return head;
         }
-
-        ListNode temp = head;
-        int count = 0;
-
-        // Count total nodes
-        while (temp != null) {
-            count++;
-            temp = temp.next;
-        }
-
-        int groups = count / k;
 
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
@@ -32,39 +12,58 @@ class Solution {
         ListNode prevGroupTail = dummy;
         ListNode current = head;
 
-        while (groups > 0) {
+        while (current != null) {
 
-            // Original head of this group
-            ListNode groupHead = current;
+            ListNode kthNode = getKthNode(current, k);
 
-            ListNode prev = null;
-            int c = 0;
-
-            // Reverse exactly k nodes
-            while (current != null && c < k) {
-
-                ListNode next = current.next;
-
-                current.next = prev;
-
-                prev = current;
-                current = next;
-
-                c++;
+            if (kthNode == null) {
+                break;
             }
 
-            // Connect previous group to new head
-            prevGroupTail.next = prev;
+            ListNode nextGroup = kthNode.next;
+            kthNode.next = null;
 
-            // Connect new tail to remaining list
-            groupHead.next = current;
+            ListNode newHead = reverse(current);
 
-            // Update previous group tail
-            prevGroupTail = groupHead;
+            prevGroupTail.next = newHead;
 
-            groups--;
+            current.next = nextGroup;
+
+            prevGroupTail = current;
+
+            current = nextGroup;
         }
 
         return dummy.next;
+    }
+
+    private ListNode getKthNode(ListNode current, int k) {
+
+        ListNode temp = current;
+
+        while (temp != null && k > 1) {
+            temp = temp.next;
+            k--;
+        }
+
+        return temp;
+    }
+
+    private ListNode reverse(ListNode current) {
+
+        ListNode prev = null;
+
+        while (current != null) {
+
+            ListNode next = current.next;
+
+            current.next = prev;
+
+            prev = current;
+
+            current = next;
+        }
+
+        return prev;
     }
 }
