@@ -1,31 +1,31 @@
 class Solution {
-    public int trap(int[] arr) {
+    public int trap(int[] height) {
+        Stack<Integer>st=new Stack<>();
+
         int total=0;
-        int leftMax=0;
-        int rightMax=0;
 
-        int left=0;
-        int right=arr.length-1;
+        for(int i=0; i<height.length; i++){
+            
+            while(!st.isEmpty() && height[i]> height[st.peek()]){
+                int bottom=st.pop();
 
-        while(left<right){
-            if(arr[left]<=arr[right]){
-                if(leftMax>arr[left]){
-                    total+=leftMax-arr[left];
-                }else{
-                    leftMax=arr[left];
-                  
+                if(st.isEmpty()){
+                    break;
                 }
-                left++;
+
+                int left=st.peek();
+
+                int width=i-left-1;
+
+
+                int waterHeight=Math.min(height[left], height[i])-height[bottom];
+
+                total += width*waterHeight;
+
+
             }
-            else{
-                if(rightMax>arr[right]){
-                    total+=rightMax-arr[right];
-                }else{
-                    rightMax=arr[right];
-                    
-                }
-                right--;
-            }
+
+            st.push(i);
         }
         return total;
     }
