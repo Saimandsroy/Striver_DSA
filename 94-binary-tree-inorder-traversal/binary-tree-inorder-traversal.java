@@ -15,22 +15,27 @@
  */
 class Solution {
 
-    List<Integer> ans= new ArrayList<>();
 
-    void inOrder(TreeNode node){
-        if(node==null){
-            return ;
+    public void inOrder(TreeNode root, List<Integer>ans){
+        
+        if(root==null){
+            return;
         }
 
-        inOrder(node.left);
-         ans.add(node.val);
-        inOrder(node.right);
-        
+        inOrder(root.left, ans);
+        ans.add(root.val);
+
+        inOrder(root.right, ans);
     }
+
     public List<Integer> inorderTraversal(TreeNode root) {
         
-        inOrder(root);
+        List<Integer> ans= new ArrayList<>();
+
+        inOrder(root,ans);
 
         return ans;
+
+
     }
 }
