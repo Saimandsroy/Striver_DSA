@@ -1,0 +1,16 @@
+class Solution {
+    public int reverseDegree(String s) {
+        
+
+        int sum=0;
+
+        for(int i=0; i<s.length(); i++){
+            char ch=s.charAt(i);
+            
+            int reverse= 26-(s.charAt(i)-'a');
+
+            sum+=(reverse*(i+1));
+        }
+        return sum;
+    }
+}
