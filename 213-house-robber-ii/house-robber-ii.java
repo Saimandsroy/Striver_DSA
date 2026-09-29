@@ -16,27 +16,30 @@ class Solution {
     public int helpRob(int [] nums, int start, int end){
         
         int n= nums.length;
-        int [] dp= new int[end-start+1];
+  
 
-        int m=dp.length;
-
-         dp[0]=nums[start];
+        int prev2=0;
+        int prev=nums[start];
+      
 
         for(int i=start+1; i<=end; i++){
             
             int take= nums[i];
 
             if(i>start+1){
-                take+=dp[i-start-2];
+                take+=prev2;
             }
 
-            int dntTake=0+dp[i-start-1];
+            int dntTake=0+prev;
 
-            dp[i-start]= Math.max(take, dntTake);
+            int currI= Math.max(take, dntTake);
+
+            prev2=prev;
+            prev=currI;
         
         }
 
-        return dp[m-1];
+        return prev;
     }
 
 }
