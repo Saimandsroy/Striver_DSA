@@ -1,43 +1,47 @@
 class Solution {
+
     public int minFallingPathSum(int[][] grid) {
 
         int n = grid.length;
 
-        int[][] dp = new int[n + 1][n + 1];
+        // dp[row][col] =
+        // minimum falling path sum from (row, col)
+        // to the last row
+        int[][] dp = new int[n][n];
 
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        // Base case: last row
+        for (int col = 0; col < n; col++) {
+            dp[n - 1][col] = grid[n - 1][col];
         }
 
-        return solve(grid, dp, n, 0);
+        // Bottom -> Top
+        for (int row = n - 2; row >= 0; row--) {
 
-    }
+            for (int col = 0; col < n; col++) {
 
-    public int solve(int [][]grid, int [][]dp, int lastCol, int row) {
+                int min = Integer.MAX_VALUE;
 
-        int n = grid.length;
+                // Try every column in the next row
+                for (int nextCol = 0; nextCol < n; nextCol++) {
 
-        if (row == n) {
-            return 0;
-        }
+                    // Same column is not allowed
+                    if (nextCol != col) {
 
-        if (dp[row][lastCol] != Integer.MAX_VALUE) {
-            return dp[row][lastCol];
-        }
+                        min = Math.min(min, dp[row + 1][nextCol]);
+                    }
+                }
 
-        int min = Integer.MAX_VALUE;
-
-        for (int col = 0; col <= n - 1; col++) {
-
-            if(col != lastCol){
-                int cost= grid[row][col] + solve(grid, dp, col, row+1);
-
-                min=Math.min(min,cost);
+                dp[row][col] = grid[row][col] + min;
             }
         }
 
+        // Starting column can be anything in row 0
+        int result = Integer.MAX_VALUE;
 
-        return dp[row][lastCol]=min;
+        for (int col = 0; col < n; col++) {
+            result = Math.min(result, dp[0][col]);
+        }
 
+        return result;
     }
 }
