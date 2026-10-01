@@ -3,28 +3,31 @@ class Solution {
 
         int n = triangle.size();
 
-        int[][] dp = new int[n][n];
+        int[] prev = new int[n];
 
         for(int j=0; j<n; j++){
             
-            dp[n-1][j]=triangle.get(n-1).get(j);
+            prev[j]=triangle.get(n-1).get(j);
         }
 
         for (int row= n - 2; row >= 0; row--) {
 
+            int [] curr= new int[n];
+
             for (int col = row; col >= 0; col--) {
 
+                int down = triangle.get(row).get(col) + prev[col];
 
-                int down = triangle.get(row).get(col) + dp[row+1][col];
+                int diagonal = triangle.get(row).get(col) + prev[col+1];
 
-                int diagonal = triangle.get(row).get(col) + dp[row+1][col+1];
-
-               dp[row][col] = Math.min(down, diagonal);
+               curr[col] = Math.min(down, diagonal);
 
             }
+
+            prev=curr;
         }
 
-        return dp[0][0];
+        return prev[0];
 
     }
 
